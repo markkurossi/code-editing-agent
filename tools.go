@@ -90,7 +90,9 @@ func ListFiles(input json.RawMessage) (string, error) {
 	}
 
 	var files []string
-	err = filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(dir, func(path string, info os.FileInfo,
+		err error) error {
+
 		if err != nil {
 			return err
 		}
@@ -149,7 +151,8 @@ func EditFile(input json.RawMessage) (string, error) {
 		return "", err
 	}
 
-	if editFileInput.Path == "" || editFileInput.OldStr == editFileInput.NewStr {
+	if editFileInput.Path == "" ||
+		editFileInput.OldStr == editFileInput.NewStr {
 		return "", fmt.Errorf("invalid input parameters")
 	}
 
@@ -162,7 +165,8 @@ func EditFile(input json.RawMessage) (string, error) {
 	}
 
 	oldContent := string(content)
-	newContent := strings.Replace(oldContent, editFileInput.OldStr, editFileInput.NewStr, -1)
+	newContent := strings.Replace(oldContent, editFileInput.OldStr,
+		editFileInput.NewStr, -1)
 
 	if oldContent == newContent && editFileInput.OldStr != "" {
 		return "", fmt.Errorf("old_str not found in file")

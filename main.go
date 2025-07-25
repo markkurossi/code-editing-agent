@@ -67,7 +67,8 @@ func (a *Agent) Run(ctx context.Context) error {
 				break
 			}
 
-			userMessage := anthropic.NewUserMessage(anthropic.NewTextBlock(userInput))
+			userMessage := anthropic.NewUserMessage(
+				anthropic.NewTextBlock(userInput))
 			conversation = append(conversation, userMessage)
 		}
 
@@ -92,13 +93,16 @@ func (a *Agent) Run(ctx context.Context) error {
 			continue
 		}
 		readUserInput = false
-		conversation = append(conversation, anthropic.NewUserMessage(toolResults...))
+		conversation = append(conversation,
+			anthropic.NewUserMessage(toolResults...))
 	}
 
 	return nil
 }
 
-func (a *Agent) executeTool(id, name string, input json.RawMessage) anthropic.ContentBlockParamUnion {
+func (a *Agent) executeTool(id, name string,
+	input json.RawMessage) anthropic.ContentBlockParamUnion {
+
 	var toolDef ToolDefinition
 	var found bool
 	for _, tool := range a.tools {
@@ -120,7 +124,9 @@ func (a *Agent) executeTool(id, name string, input json.RawMessage) anthropic.Co
 	return anthropic.NewToolResultBlock(id, response, false)
 }
 
-func (a *Agent) runInference(ctx context.Context, conversation []anthropic.MessageParam) (*anthropic.Message, error) {
+func (a *Agent) runInference(ctx context.Context,
+	conversation []anthropic.MessageParam) (*anthropic.Message, error) {
+
 	anthropicTools := []anthropic.ToolUnionParam{}
 	for _, tool := range a.tools {
 		anthropicTools = append(anthropicTools, anthropic.ToolUnionParam{
